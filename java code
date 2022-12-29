@@ -1,0 +1,107 @@
+import java.util.Random;
+import java.util.*;  
+public class Main
+{
+	public static void main(String[] args) {
+	    int intData;
+        char chData;
+	    Scanner sc = new Scanner(System.in);
+        System.out.println("Введите размер поля");
+        intData = sc.nextInt();
+        int n = intData;
+        char[][] desk = new char[intData][intData];
+        int[] hod = new int[intData*intData];
+        for (int i=0;i<(intData);i++){
+            for (int j=0;j<(intData);j++){
+                desk[i][j]='*';
+                System.out.print(desk[i][j] + " ");
+            }
+            System.out.println("");
+        }
+        System.out.println("Выберите ваш символ X или 0, напишите 'X' или '0'");
+        chData = sc.next().charAt(0);
+        if ((chData!='X') && (chData!='0')){
+            System.out.println("Вы ввели неверный символ");
+            System.out.println("Выберите ваш символ X или 0, напишите 'X' или '0'");
+            chData = sc.next().charAt(0);
+        }
+        int a,b;
+        int x=0;
+        int k=n*n;
+        int m=0;
+        while (x==0){
+                System.out.println("Выберите клетку, где разместить свой символ, напишите без пробела индекс");
+                intData = sc.nextInt();
+                for (int i = 0; i<k;i++){
+                    if ((hod[i]==intData) & (m!=0)){
+                        System.out.println("Эта клетка уже занята вами или ИИ, введите снова, не занятую клетку");
+                        for (int l=0;l<(intData);l++){
+                            for (int j=0;j<(intData);j++){
+                            System.out.print(desk[l][j] + " ");
+                            }
+                            System.out.println("");
+                        }
+                        intData = sc.nextInt();
+                    }
+                }
+                b = intData % 10;
+                a = intData / 10;
+                desk[a][b]=chData;
+                hod[m]=chData;
+                Random rand = new Random();
+                int upperbound = n;
+                int int_random1 = rand.nextInt(upperbound);
+                int int_random2 = rand.nextInt(upperbound);
+                for (int i = 0; i<k;i++){
+                    if (hod[i]!=int_random1*10+int_random2){
+                        if (chData=='X'){
+                             desk[int_random1][int_random2]='0';
+                             hod[m+1]=int_random1*10+int_random2;
+                        }
+                        if (chData=='0'){
+                             desk[int_random1][int_random2]='1';
+                             hod[m+1]=int_random1*10+int_random2;
+                        }
+                    }
+                }
+                if (m>2){
+                    for (int i = 0; i<k;i++){
+                        while(hod[i]==int_random1*10+int_random2){
+                            int_random1 = rand.nextInt(upperbound);
+                            int_random2 = rand.nextInt(upperbound);   
+                        }
+                        if (chData=='X'){
+                                desk[int_random1][int_random2]='0';
+                                hod[m+1]=int_random1*10+int_random2;
+                        }
+                        if (chData=='0'){
+                                desk[int_random1][int_random2]='1';
+                                hod[m+1]=int_random1*10+int_random2;
+                        }
+                    }
+                }
+                m=m+1;
+                System.out.println("Результат после вашего хода и ИИ");
+                for (int i=0;i<(n);i++){
+                    for (int j=0;j<(n);j++){
+                        System.out.print(desk[i][j] + " ");
+                    }
+                    System.out.println("");
+                }
+                for (int i=0;i<n;i++){
+                    if ((desk[i][0]==desk[i][1]) && (desk[i][0] == desk[i][2]) && (desk[i][0]==chData)){
+                        System.out.println("победа игрока, выбравшего символ  " + chData);
+                        x=1;
+                    }
+                    if ((desk[0][i]==desk[1][i]) && (desk[0][i] == desk[2][i]) && (desk[0][i]==chData)){
+                        System.out.println("победа игрока, выбравшего символ " + chData);
+                        x=1;
+                    }
+                    if ((i==0) && (desk[i][0]==desk[i+1][1]) && (desk[i][0]==desk[i+2][2]) && (desk[i][0]==chData)){
+                        System.out.println("победа игрока, выбравшего символ " + chData);
+                        x=1;  
+                    }
+                }
+            }
+	    }
+	}
